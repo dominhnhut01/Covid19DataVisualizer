@@ -11,7 +11,7 @@ module com.example.covid19datavisualizer {
     requires java.sql;
 
     requires io.github.cdimascio.dotenv.java;
-    requires mysql.connector.java;
+    requires mysql.connector.j;
 
     opens com.example.covid19datavisualizer to javafx.fxml;
     exports com.example.covid19datavisualizer;
