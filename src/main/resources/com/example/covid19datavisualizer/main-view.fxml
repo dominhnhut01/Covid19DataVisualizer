@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="712.0" minWidth="1256.0" prefHeight="712.0" prefWidth="1256.0" spacing="20.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.covid19datavisualizer.MainViewController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+    <TabPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="717.0" prefWidth="1216.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+            <Tab text="Covid 19 Data">
+                <content>
+                    <AnchorPane prefHeight="581.0" prefWidth="1191.0">
+                        <AnchorPane prefHeight="167.0" prefWidth="1216.0">
+                            <children>
+                                <Label layoutX="353.0" layoutY="34.0" prefHeight="66.0" prefWidth="634.0" text="Covid 19 Vaccination Coverage Data in Chicago">
+                                    <font>
+                                        <Font size="22.0" />
+                                    </font>
+                                </Label>
+
+                                <HBox layoutX="14.0" layoutY="120.0" prefHeight="47.0" prefWidth="1048.0">
+                                    <children>
+                                        <Label prefHeight="102.0" prefWidth="177.0" text="Zipcode:" textAlignment="CENTER">
+                                            <font>
+                                                <Font size="19.0" />
+                                            </font>
+                                        </Label>
+
+                                        <TextField fx:id="zipcodeSearchValue" onKeyReleased="#updateRecommendedZipcode" prefHeight="93.0" prefWidth="338.0" />
+                                        <ComboBox fx:id="zipcodeOptions" onAction="#handleSelectingZipcode" prefHeight="93.0" prefWidth="338.0" />
+                                        <Button mnemonicParsing="false" onAction="#onZipcodeSearchButtonClicked" text="Search" />
+                                    </children>
+                                </HBox>
+                            </children>
+                        </AnchorPane>
+                        <GridPane layoutY="201.0" prefHeight="492.0" prefWidth="1204.0">
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            </rowConstraints>
+                            <children>
+                                <HBox prefHeight="100.0" prefWidth="200.0">
+                                    <children>
+                                        <Label text="Vaccination Rate:" />
+                                        <TextField fx:id="vaccinationRateTextField">
+                                            <HBox.margin>
+                                                <Insets left="30.0" />
+                                            </HBox.margin>
+                                        </TextField>
+                                    </children>
+                                </HBox>
+                                <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
+                                    <children>
+                                        <Label text="Some available vaccination locations:" />
+                                        <TextArea fx:id="vaccinationLocationsTextArea" prefHeight="50.0" prefWidth="329.0">
+                                            <HBox.margin>
+                                                <Insets bottom="50.0" left="30.0" />
+                                            </HBox.margin>
+                                        </TextArea>
+                                    </children>
+                                </HBox>
+                                <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
+                                    <children>
+                                        <Label text="Age group with most vaccinated people:" />
+                                        <TextField fx:id="ageGroupWithMaxVaccinatedTextField" prefHeight="24.0" prefWidth="299.0">
+                                            <HBox.margin>
+                                                <Insets left="30.0" />
+                                            </HBox.margin>
+                                        </TextField>
+                                    </children>
+                                </HBox>
+                                <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                    <children>
+                                        <Label text="Age group with least vaccinated people:" />
+                                        <TextField fx:id="ageGroupWithMinVaccinatedTextField" prefHeight="24.0" prefWidth="308.0">
+                                            <HBox.margin>
+                                                <Insets left="30.0" />
+                                            </HBox.margin>
+                                        </TextField>
+                                    </children>
+                                </HBox>
+                            </children>
+                        </GridPane>
+                    </AnchorPane>
+                </content>
+            </Tab>
+            <Tab text="Covid-19 Self-Report">
+                <content>
+                    <AnchorPane>
+                        <children>
+                            <VBox layoutX="9.0" layoutY="8.0" prefHeight="668.0" prefWidth="1208.0" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="11.0" AnchorPane.topAnchor="8.0">
+                                <children>
+                                    <Label text="Covid-19 Self-Report">
+                                        <font>
+                                            <Font size="27.0" />
+                                        </font>
+                                        <VBox.margin>
+                                            <Insets left="460.0" />
+                                        </VBox.margin>
+                                    </Label>
+                                    <GridPane>
+                                        <columnConstraints>
+                                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                        </columnConstraints>
+                                        <rowConstraints>
+                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        </rowConstraints>
+                                        <children>
+                                            <HBox prefHeight="100.0" prefWidth="200.0">
+                                                <children>
+                                                    <Label text="Full Name:" />
+                                                    <TextField fx:id="nameTextField" />
+                                                </children>
+                                            </HBox>
+                                            <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
+                                                <children>
+                                                    <Label text="Age: " />
+                                                    <TextField fx:id="ageTextField" />
+                                                </children>
+                                            </HBox>
+                                            <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
+                                                <children>
+                                                    <Label text="Zipcode:" />
+                                                    <TextField fx:id="zipcodeTextField" />
+                                                </children>
+                                            </HBox>
+                                            <Button mnemonicParsing="false" onAction="#submitVaccinationRecord" text="Submit" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                        </children>
+                                    </GridPane>
+                                    <Label text="Recent Reports">
+                                        <font>
+                                            <Font size="27.0" />
+                                        </font>
+                                        <VBox.margin>
+                                            <Insets left="480.0" top="100.0" />
+                                        </VBox.margin>
+                                    </Label>
+                                    <TableView fx:id="vaccinationRecordTableView" prefHeight="273.0" prefWidth="1194.0">
+                                        <columns>
+                                            <TableColumn prefWidth="135.0" text="Index">
+                                                <cellValueFactory>
+                                                    <PropertyValueFactory property="index" />
+                                                </cellValueFactory>
+                                            </TableColumn>
+                                            <TableColumn prefWidth="482.0" text="Age">
+                                                <cellValueFactory>
+                                                    <PropertyValueFactory property="age" />
+                                                </cellValueFactory>
+                                            </TableColumn>
+                                            <TableColumn prefWidth="282.0" text="Zipcode">
+                                                <cellValueFactory>
+                                                    <PropertyValueFactory property="zipcode" />
+                                                </cellValueFactory>
+                                            </TableColumn>
+                                            <TableColumn prefWidth="282.0" text="Date submitted">
+                                                <cellValueFactory>
+                                                    <PropertyValueFactory property="dateSubmitted" />
+                                                </cellValueFactory>
+                                            </TableColumn>
+                                        </columns>
+                                    </TableView>
+                                </children>
+                            </VBox>
+                        </children>
+                    </AnchorPane>
+                </content>
+            </Tab>
+        </tabs>
+    </TabPane>
+</VBox>
