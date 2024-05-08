@@ -4,6 +4,7 @@ target/
 !**/src/test/**/target/
 *.env
 SQL/csv_data/
+out/
 
 ### IntelliJ IDEA ###
 .idea/modules.xml

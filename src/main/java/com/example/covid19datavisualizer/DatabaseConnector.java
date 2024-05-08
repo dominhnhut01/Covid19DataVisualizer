@@ -67,7 +67,9 @@ public class DatabaseConnector {
         resultSet.next();
         int totalNumberOfVaccinatedPeople = resultSet.getInt(1);
         resultSet.close();
-
+        if (totalNumberOfVaccinatedPeople == 0) {
+            throw new SQLException();
+        }
         return totalNumberOfVaccinatedPeople;
     }
 
@@ -82,6 +84,9 @@ public class DatabaseConnector {
         resultSet.next();
         int zipcodePopulation = resultSet.getInt(1);
         resultSet.close();
+        if (zipcodePopulation == 0) {
+            throw new SQLException();
+        }
         return zipcodePopulation;
     }
 
@@ -109,6 +114,10 @@ public class DatabaseConnector {
             }
         }
 
+        if (vaccinationRateByAgeGroup.isEmpty()) {
+            throw new SQLException();
+        }
+
         return vaccinationRateByAgeGroup;
     }
 
@@ -132,6 +141,10 @@ public class DatabaseConnector {
             String fullAddress = resultSet.getString(2) + ", " + resultSet.getString(3) + ", " + resultSet.getString(4) + ", " + resultSet.getString(5) + ", " + resultSet.getString(6);
             vaccinationLocations.add(new Pair<>(resultSet.getString(1), fullAddress));
         }
+        if (vaccinationLocations.isEmpty()) {
+            throw new SQLException();
+        }
+
         return vaccinationLocations;
     }
 

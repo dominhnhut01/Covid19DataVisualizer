@@ -116,7 +116,7 @@ public class MainViewController {
             double vaccinationRate = totalNumberOfVaccinatedPeople * 1.0 / zipcodePopulation;
             vaccinationRateTextField.setText(decimalFormat.format(vaccinationRate * 100.0) + "%");
         } catch (SQLException e) {
-            vaccinationLocationsTextArea.setText("Not available for this invalid zipcode");
+            vaccinationRateTextField.setText("Not available for this invalid zipcode");
         }
     }
 
