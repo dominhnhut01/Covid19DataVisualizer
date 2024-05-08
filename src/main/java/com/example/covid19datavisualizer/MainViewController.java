@@ -6,15 +6,15 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
+import javafx.scene.paint.Color;
 import javafx.util.Pair;
 
 import java.sql.SQLException;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
@@ -40,6 +40,8 @@ public class MainViewController {
     private TextField ageTextField;
     @FXML
     private TextField zipcodeTextField;
+    @FXML
+    private BarChart<String,Double> vaccinationRateChart;
     @FXML
     private TableView<VaccinationRecordRow> vaccinationRecordTableView;
 
@@ -107,6 +109,7 @@ public class MainViewController {
         setAgeGroupWithLeastVaccinatedPeople(inputZipcode);
         setAgeGroupWithMostVaccinatedPeople(inputZipcode);
         setVaccinationLocations(inputZipcode);
+        setVaccinationRateChart(inputZipcode);
     }
 
     private void setVaccinationRate(String zipcode) {
@@ -117,6 +120,26 @@ public class MainViewController {
             vaccinationRateTextField.setText(decimalFormat.format(vaccinationRate * 100.0) + "%");
         } catch (SQLException e) {
             vaccinationRateTextField.setText("Not available for this invalid zipcode");
+        }
+    }
+
+    private void setVaccinationRateChart(String zipcode) {
+        vaccinationRateChart.getData().clear();
+        try {
+            Map<AgeGroup, Double> vaccinationRateByAgeGroup = databaseConnector.getVaccinationRateByAgeGroupAtZipcode(zipcode);
+            List<AgeGroup> ageGroupList = new ArrayList<>(vaccinationRateByAgeGroup.keySet());
+            Collections.sort(ageGroupList);
+
+            for (int idx=0; idx < vaccinationRateByAgeGroup.size(); idx++) {
+                AgeGroup currentAgeGroup = ageGroupList.get(idx);
+                XYChart.Series<String, Double> series = new XYChart.Series<>();
+                series.getData().add(new XYChart.Data<>(currentAgeGroup.getLabel(), vaccinationRateByAgeGroup.get(currentAgeGroup) * 100));
+                series.setName(currentAgeGroup.getLabel());
+
+                vaccinationRateChart.getData().add(series);
+            }
+        } catch (SQLException e) {
+            ;
         }
     }
 

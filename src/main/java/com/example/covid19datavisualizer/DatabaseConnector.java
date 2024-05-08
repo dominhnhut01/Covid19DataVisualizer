@@ -3,9 +3,7 @@ package com.example.covid19datavisualizer;
 import io.github.cdimascio.dotenv.Dotenv;
 import javafx.util.Pair;
 
-import java.io.Console;
 import java.sql.*;
-import java.lang.ClassNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,7 +31,7 @@ class VaccinationRecord {
     String zipcode;
     Timestamp dateCreated;
 
-    public VaccinationRecord(int age, String zipcode, Timestamp dateCreated){
+    public VaccinationRecord(int age, String zipcode, Timestamp dateCreated) {
         this.age = age;
         this.zipcode = zipcode;
         this.dateCreated = dateCreated;
@@ -41,11 +39,11 @@ class VaccinationRecord {
 }
 
 public class DatabaseConnector {
+    private static DatabaseConnector instance = null;
     Dotenv dotenv = Dotenv.load();
     private final String username = dotenv.get("DATABASE_USERNAME");
     private final String password = dotenv.get("DATABASE_PASSWORD");
     private final Connection connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/covid19_vaccinations?serverTimezone=UTC", username, password);
-    private static DatabaseConnector instance = null;
 
     private DatabaseConnector() throws SQLException, ClassNotFoundException {
         Class.forName("com.mysql.cj.jdbc.Driver");
@@ -90,7 +88,7 @@ public class DatabaseConnector {
         return zipcodePopulation;
     }
 
-    public Map<AgeGroup, Double> getVaccinationRateByAgeGroupAtZipcode(String zipcode) throws  SQLException {
+    public Map<AgeGroup, Double> getVaccinationRateByAgeGroupAtZipcode(String zipcode) throws SQLException {
         String query = "SELECT age_group, sum(count), sum(population_size)\n" +
                 "FROM covid19_vaccinations.covid19_vaccination_coverage\n" +
                 "WHERE zipcode=? AND age_group!='All Ages' AND age_group!='18+ yrs'\n" +
@@ -108,7 +106,7 @@ public class DatabaseConnector {
             } else if (ageGroup.equals("18-64 yrs")) {
                 double vaccinationRate = resultSet.getInt(2) * 1.0 / resultSet.getInt(3);
                 vaccinationRateByAgeGroup.put(AgeGroup.YEARS_18_64, vaccinationRate);
-            }   else {
+            } else {
                 double vaccinationRate = resultSet.getInt(2) * 1.0 / resultSet.getInt(3);
                 vaccinationRateByAgeGroup.put(AgeGroup.YEARS_64_PLUS, vaccinationRate);
             }
@@ -123,6 +121,7 @@ public class DatabaseConnector {
 
     /**
      * Get the list of available facility at the input zipcode
+     *
      * @param zipcode input zipcode
      * @return List of name of the facility and address of the facility
      * @throws SQLException throws if no zipcode found in the database
@@ -137,7 +136,7 @@ public class DatabaseConnector {
         statement.setString(1, zipcode);
         ResultSet resultSet = statement.executeQuery();
 
-        for (int i=0; i<maxNumberOfReturnedLocations && resultSet.next(); i++) {
+        for (int i = 0; i < maxNumberOfReturnedLocations && resultSet.next(); i++) {
             String fullAddress = resultSet.getString(2) + ", " + resultSet.getString(3) + ", " + resultSet.getString(4) + ", " + resultSet.getString(5) + ", " + resultSet.getString(6);
             vaccinationLocations.add(new Pair<>(resultSet.getString(1), fullAddress));
         }
@@ -150,6 +149,7 @@ public class DatabaseConnector {
 
     /**
      * Get the list of available facility at the input zipcode
+     *
      * @param zipcode input zipcode
      * @return List of name of the facility and address of the facility
      * @throws SQLException throws if no zipcode found in the database
@@ -158,7 +158,7 @@ public class DatabaseConnector {
         return getVaccinationLocationAtZipcode(zipcode, 5);
     }
 
-    public List<String>getZipcodeWithPrefix(String prefix, int maxNumberOfReturnedLocations) throws SQLException {
+    public List<String> getZipcodeWithPrefix(String prefix, int maxNumberOfReturnedLocations) throws SQLException {
         String query = "select distinct postal_code\n" +
                 "from covid19_vaccinations.covid19_vaccination_locations\n" +
                 "where postal_code LIKE ?;";
@@ -167,12 +167,13 @@ public class DatabaseConnector {
         ResultSet resultSet = statement.executeQuery();
         List<String> zipcodes = new ArrayList<>();
 
-        for (int i=0; i<maxNumberOfReturnedLocations && resultSet.next(); i++) {
+        for (int i = 0; i < maxNumberOfReturnedLocations && resultSet.next(); i++) {
             zipcodes.add(resultSet.getString(1));
         }
         return zipcodes;
     }
-    public List<String >getZipcodeWithPrefix(String prefix) throws SQLException {
+
+    public List<String> getZipcodeWithPrefix(String prefix) throws SQLException {
         return getZipcodeWithPrefix(prefix, 7);
     }
 
